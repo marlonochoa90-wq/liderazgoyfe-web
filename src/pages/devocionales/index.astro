@@ -1,0 +1,43 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import DevocionalCard from '@/components/DevocionalCard.astro';
+import { getCollection } from 'astro:content';
+
+const devocionales = (await getCollection('devocionales', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+---
+
+<BaseLayout
+  title="Devocionales"
+  description="Devocionales diarios de 5 minutos con versículo, reflexión, aplicación y oración para tu crecimiento espiritual y liderazgo."
+>
+  <section class="bg-deep-950 py-20 text-center text-ivory">
+    <div class="container-page">
+      <h1 class="font-display text-4xl md:text-5xl">Devocionales</h1>
+      <p class="mx-auto mt-4 max-w-xl text-ivory/70">
+        Cinco minutos al día para alinear tu corazón, tu liderazgo y tu propósito con la Palabra de Dios.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="container-page">
+      <div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
+        {devocionales.map((d) => (
+          <DevocionalCard
+            slug={d.slug}
+            title={d.data.title}
+            description={d.data.description}
+            fecha={d.data.fecha}
+            categoria={d.data.categoria}
+            imagen={d.data.imagen}
+            tiempoLectura={d.data.tiempoLectura}
+          />
+        ))}
+      </div>
+      {devocionales.length === 0 && (
+        <p class="text-center text-deep-500">Pronto publicaremos nuevos devocionales. Vuelve pronto.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>

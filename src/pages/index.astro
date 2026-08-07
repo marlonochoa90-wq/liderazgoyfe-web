@@ -1,0 +1,200 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import DevocionalCard from '@/components/DevocionalCard.astro';
+import { getCollection } from 'astro:content';
+import { SITE, REDES, CATEGORIA_COLOR } from '@/lib/site';
+
+const devocionales = (await getCollection('devocionales', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+
+const destacado = devocionales.find((d) => d.data.destacado) ?? devocionales[0];
+const recientes = devocionales.filter((d) => d.slug !== destacado?.slug).slice(0, 3);
+
+const reels = (await getCollection('reels', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf())
+  .slice(0, 3);
+
+const categorias = ['Fe', 'Liderazgo', 'Sabiduría', 'Oración', 'Familia', 'Jóvenes', 'Propósito'];
+
+const testimonios = [
+  {
+    nombre: 'Rosa M.',
+    texto: 'Los devocionales de Liderazgo y Fe se han vuelto parte de mi rutina como líder de jóvenes. Son cortos pero profundos.',
+    rol: 'Líder de jóvenes, Tegucigalpa',
+  },
+  {
+    nombre: 'Carlos A.',
+    texto: 'El estudio sobre Nehemías transformó cómo dirijo a mi equipo en el trabajo. Principios bíblicos aplicados de verdad.',
+    rol: 'Gerente y pastor bivocacional',
+  },
+  {
+    nombre: 'Daniela R.',
+    texto: 'Los reels son mi forma favorita de recibir una palabra rápida antes de empezar el día.',
+    rol: 'Emprendedora',
+  },
+];
+---
+
+<BaseLayout title={`${SITE.nombre} — ${SITE.lema}`} description={SITE.descripcion}>
+  <!-- HERO -->
+  <section class="relative flex min-h-[88vh] items-end overflow-hidden bg-deep-950 text-ivory">
+    <div class="absolute inset-0">
+      <img
+        src="/images/hero-liderazgo-fe.svg"
+        alt=""
+        class="h-full w-full object-cover opacity-60"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-deep-950 via-deep-950/60 to-deep-950/10"></div>
+    </div>
+
+    <div class="container-page relative z-10 pb-20 pt-40 md:pb-28">
+      <p class="animate-fade-in text-xs font-semibold uppercase tracking-[0.3em] text-gold-400">
+        {SITE.nombre}
+      </p>
+      <h1 class="animate-fade-in-up mt-4 max-w-3xl font-display text-4xl font-bold leading-[1.1] md:text-6xl">
+        Liderando con propósito. <span class="text-gold-400">Viviendo por fe.</span>
+      </h1>
+      <p class="animate-fade-in-up mt-6 max-w-xl text-lg text-ivory/80" style="animation-delay:0.1s">
+        Devocionales, estudios y recursos para líderes que quieren crecer en carácter, sabiduría y propósito bíblico.
+      </p>
+      <div class="animate-fade-in-up mt-10 flex flex-wrap gap-4" style="animation-delay:0.2s">
+        <a href="/devocionales" class="btn-gold">Leer Devocional</a>
+        <a href={REDES.whatsapp} target="_blank" rel="noopener noreferrer" class="btn-outline">Únete al WhatsApp</a>
+        <a href={REDES.facebook} target="_blank" rel="noopener noreferrer" class="btn-outline">Facebook</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERSÍCULO DEL DÍA -->
+  {destacado && (
+    <section class="bg-deep-900 py-14 text-ivory">
+      <div class="container-page text-center">
+        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-gold-400">Versículo del día</p>
+        <blockquote class="mx-auto mt-5 max-w-2xl font-display text-2xl leading-snug md:text-3xl">
+          “{destacado.data.versiculo}”
+        </blockquote>
+        <p class="mt-4 text-sm text-ivory/60">{destacado.data.versiculoRef}</p>
+      </div>
+    </section>
+  )}
+
+  <!-- DEVOCIONAL DESTACADO -->
+  {destacado && (
+    <section class="py-20">
+      <div class="container-page">
+        <div class="mb-10 flex items-end justify-between">
+          <h2 class="section-title">Devocional destacado</h2>
+          <a href="/devocionales" class="hidden text-sm font-semibold text-gold-600 hover:underline md:block">Ver todos →</a>
+        </div>
+        <div class="grid gap-10 md:grid-cols-2 md:items-center">
+          <div class="overflow-hidden rounded-3xl shadow-premium">
+            <img src={destacado.data.imagen} alt={destacado.data.title} class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div>
+            <span class:list={['badge', CATEGORIA_COLOR[destacado.data.categoria]]}>{destacado.data.categoria}</span>
+            <h3 class="mt-4 font-display text-3xl text-deep-900">{destacado.data.title}</h3>
+            <p class="mt-4 text-deep-600">{destacado.data.description}</p>
+            <a href={`/devocionales/${destacado.slug}`} class="btn-primary mt-6 inline-flex">Leer ahora</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- RECIENTES -->
+  {recientes.length > 0 && (
+    <section class="bg-deep-50/40 py-20">
+      <div class="container-page">
+        <h2 class="section-title mb-10">Más devocionales</h2>
+        <div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
+          {recientes.map((d) => (
+            <DevocionalCard
+              slug={d.slug}
+              title={d.data.title}
+              description={d.data.description}
+              fecha={d.data.fecha}
+              categoria={d.data.categoria}
+              imagen={d.data.imagen}
+              tiempoLectura={d.data.tiempoLectura}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- REELS DESTACADOS -->
+  {reels.length > 0 && (
+    <section class="py-20">
+      <div class="container-page">
+        <div class="mb-10 flex items-end justify-between">
+          <h2 class="section-title">Reels destacados</h2>
+          <a href="/reels" class="hidden text-sm font-semibold text-gold-600 hover:underline md:block">Ver todos →</a>
+        </div>
+        <div class="grid gap-8 sm:grid-cols-3">
+          {reels.map((r) => (
+            <a href="/reels" class="card group overflow-hidden">
+              <div class="aspect-[9/16] w-full overflow-hidden bg-deep-900">
+                <img src={r.data.miniatura} alt={r.data.title} loading="lazy" class="h-full w-full object-cover transition-transform duration-500 ease-apple group-hover:scale-105" />
+              </div>
+              <div class="p-4">
+                <span class:list={['badge', CATEGORIA_COLOR[r.data.categoria]]}>{r.data.categoria}</span>
+                <p class="mt-2 font-display text-base text-deep-900">{r.data.title}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CATEGORÍAS -->
+  <section class="bg-deep-950 py-20 text-ivory">
+    <div class="container-page">
+      <h2 class="section-title text-ivory">Explora por categoría</h2>
+      <div class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+        {categorias.map((cat) => (
+          <a
+            href={`/biblioteca#${cat.toLowerCase()}`}
+            class="rounded-2xl border border-ivory/10 bg-ivory/5 p-6 text-center font-display text-lg transition-all duration-300 ease-apple hover:border-gold-400/50 hover:bg-ivory/10"
+          >
+            {cat}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="py-20">
+    <div class="container-page">
+      <h2 class="section-title text-center">Lo que dice nuestra comunidad</h2>
+      <div class="mt-12 grid gap-8 md:grid-cols-3">
+        {testimonios.map((t) => (
+          <blockquote class="card p-8">
+            <p class="font-display text-lg italic leading-relaxed text-deep-800">“{t.texto}”</p>
+            <footer class="mt-6">
+              <p class="text-sm font-semibold text-deep-900">{t.nombre}</p>
+              <p class="text-xs text-deep-500">{t.rol}</p>
+            </footer>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="bg-gradient-to-br from-deep-900 to-deep-950 py-24 text-center text-ivory">
+    <div class="container-page">
+      <h2 class="font-display text-3xl md:text-4xl">¿Listo para crecer en tu liderazgo?</h2>
+      <p class="mx-auto mt-4 max-w-xl text-ivory/70">
+        Únete a nuestra comunidad y recibe devocionales, estudios y recursos directamente por WhatsApp.
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <a href={REDES.whatsapp} target="_blank" rel="noopener noreferrer" class="btn-gold">Únete al WhatsApp</a>
+        <a href="/recursos" class="btn-outline">Ver recursos</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

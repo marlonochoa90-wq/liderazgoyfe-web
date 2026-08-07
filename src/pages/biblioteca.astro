@@ -1,0 +1,44 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORIAS } from '@/content/config';
+import { CATEGORIA_COLOR } from '@/lib/site';
+
+const devocionales = await getCollection('devocionales', ({ data }) => !data.draft);
+const estudios = await getCollection('estudios', ({ data }) => !data.draft);
+
+function contarPorCategoria(cat: string) {
+  return (
+    devocionales.filter((d) => d.data.categoria === cat).length +
+    estudios.filter((e) => e.data.categoria === cat).length
+  );
+}
+---
+
+<BaseLayout
+  title="Biblioteca Bíblica"
+  description="Explora contenido cristiano organizado por temas: fe, liderazgo, sabiduría, oración, familia, jóvenes y propósito."
+>
+  <section class="bg-deep-950 py-20 text-center text-ivory">
+    <div class="container-page">
+      <h1 class="font-display text-4xl md:text-5xl">Biblioteca Bíblica</h1>
+      <p class="mx-auto mt-4 max-w-xl text-ivory/70">
+        Todo nuestro contenido —devocionales, estudios, reels y recursos— organizado por tema.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="container-page grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {CATEGORIAS.map((cat) => (
+        <a id={cat.toLowerCase()} href={`/devocionales?categoria=${cat}`} class="card flex flex-col justify-between p-8">
+          <div>
+            <span class:list={['badge', CATEGORIA_COLOR[cat]]}>{cat}</span>
+            <h2 class="mt-4 font-display text-2xl text-deep-900">{cat}</h2>
+          </div>
+          <p class="mt-6 text-sm text-deep-500">{contarPorCategoria(cat)} contenidos disponibles</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

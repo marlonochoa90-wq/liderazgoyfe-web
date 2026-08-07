@@ -1,0 +1,73 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORIA_COLOR, SITE } from '@/lib/site';
+
+export async function getStaticPaths() {
+  const devocionales = await getCollection('devocionales', ({ data }) => !data.draft);
+  return devocionales.map((d) => ({ params: { slug: d.slug }, props: { entry: d } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { title, description, fecha, versiculo, versiculoRef, categoria, autor, imagen, tiempoLectura } = entry.data;
+
+const fechaFmt = fecha.toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: fecha.toISOString(),
+  author: { '@type': 'Person', name: autor },
+  publisher: { '@type': 'Organization', name: SITE.nombre },
+  image: imagen ? new URL(imagen, SITE.url).toString() : undefined,
+};
+---
+
+<BaseLayout title={title} description={description} image={imagen} type="article" publishedTime={fecha} schema={schema}>
+  <article class="py-16">
+    <div class="container-page max-w-3xl">
+      <div class="flex items-center gap-3 text-xs">
+        <span class:list={['badge', CATEGORIA_COLOR[categoria]]}>{categoria}</span>
+        <span class="text-deep-400">{tiempoLectura} min de lectura · {fechaFmt}</span>
+      </div>
+      <h1 class="mt-4 font-display text-3xl md:text-5xl text-deep-900">{title}</h1>
+      <p class="mt-2 text-sm text-deep-500">Por {autor}</p>
+
+      {imagen && (
+        <div class="mt-8 overflow-hidden rounded-3xl shadow-premium">
+          <img src={imagen} alt={title} class="w-full object-cover" />
+        </div>
+      )}
+
+      <blockquote class="mt-10 border-l-4 border-gold-400 bg-deep-50/60 px-6 py-5 font-display text-xl italic text-deep-800">
+        “{versiculo}”
+        <footer class="mt-2 text-sm not-italic text-deep-500">{versiculoRef}</footer>
+      </blockquote>
+
+      <div class="prose prose-lg mt-10 max-w-none prose-headings:font-display prose-headings:text-deep-900 prose-a:text-gold-600">
+        <Content />
+      </div>
+
+      <div class="mt-12 flex flex-wrap items-center gap-3 border-t border-deep-900/10 pt-8">
+        <span class="text-sm font-semibold text-deep-700">Compartir:</span>
+        <a
+          class="btn-outline !border-deep-900/20 !text-deep-900 !px-4 !py-2 text-xs"
+          target="_blank" rel="noopener noreferrer"
+          href={`https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' — ' + Astro.url.toString())}`}
+        >WhatsApp</a>
+        <a
+          class="btn-outline !border-deep-900/20 !text-deep-900 !px-4 !py-2 text-xs"
+          target="_blank" rel="noopener noreferrer"
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.toString())}`}
+        >Facebook</a>
+      </div>
+
+      <div class="mt-10">
+        <a href="/devocionales" class="text-sm font-semibold text-gold-600 hover:underline">← Volver a devocionales</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

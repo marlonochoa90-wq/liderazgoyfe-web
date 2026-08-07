@@ -1,0 +1,58 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/lib/site';
+const fechaActualizacion = 'agosto de 2026';
+---
+
+<BaseLayout title="Política de privacidad" description={`Política de privacidad de ${SITE.nombre}.`}>
+  <section class="bg-deep-950 py-20 text-center text-ivory">
+    <div class="container-page">
+      <h1 class="font-display text-4xl md:text-5xl">Política de privacidad</h1>
+      <p class="mt-4 text-ivory/60">Última actualización: {fechaActualizacion}</p>
+    </div>
+  </section>
+
+  <section class="py-20">
+    <div class="container-page prose prose-lg max-w-3xl prose-headings:font-display prose-a:text-gold-600">
+      <h2>1. Información que recopilamos</h2>
+      <p>
+        Cuando usas nuestros formularios de contacto o peticiones de oración, recopilamos el nombre, correo electrónico
+        y el contenido del mensaje que decides compartir. También usamos herramientas de analítica (Google Analytics y
+        Microsoft Clarity) para entender el uso general del sitio de forma agregada y anónima.
+      </p>
+
+      <h2>2. Uso de la información</h2>
+      <p>
+        Usamos tu información únicamente para responder tus mensajes, orar por tus peticiones y mejorar el contenido de
+        la plataforma. No vendemos ni compartimos tus datos personales con terceros con fines comerciales.
+      </p>
+
+      <h2>3. Peticiones de oración confidenciales</h2>
+      <p>
+        Si marcas una petición como confidencial, esta solo será visible para el equipo de oración autorizado y no se
+        publicará en ningún canal público.
+      </p>
+
+      <h2>4. Cookies y analítica</h2>
+      <p>
+        Este sitio utiliza cookies de analítica (Google Analytics, Microsoft Clarity) para entender cómo se usa la
+        plataforma y mejorar la experiencia. Puedes deshabilitar las cookies desde la configuración de tu navegador.
+      </p>
+
+      <h2>5. Servicios de terceros</h2>
+      <p>
+        Los formularios son procesados por Netlify Forms. Los enlaces a WhatsApp y Facebook te dirigen a plataformas de
+        terceros con sus propias políticas de privacidad.
+      </p>
+
+      <h2>6. Tus derechos</h2>
+      <p>
+        Puedes solicitar la eliminación de tus datos personales en cualquier momento escribiéndonos a través de nuestra
+        página de contacto.
+      </p>
+
+      <h2>7. Contacto</h2>
+      <p>Si tienes preguntas sobre esta política, contáctanos a través de la página de <a href="/contacto">Contacto</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

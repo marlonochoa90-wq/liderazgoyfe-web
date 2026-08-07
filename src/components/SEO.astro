@@ -1,0 +1,76 @@
+---
+import { SITE } from '@/lib/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+  noindex?: boolean;
+  schema?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description = SITE.descripcion,
+  image = '/images/og-default.svg',
+  type = 'website',
+  publishedTime,
+  noindex = false,
+  schema,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, SITE.url).toString();
+const ogImageURL = new URL(image, SITE.url).toString();
+const fullTitle = title === SITE.nombre ? title : `${title} | ${SITE.nombre}`;
+
+const defaultSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.nombre,
+  url: SITE.url,
+  description: SITE.descripcion,
+  inLanguage: 'es',
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.nombre,
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/icons/icon-512.png', SITE.url).toString(),
+    },
+  },
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:locale" content={SITE.localeOG} />
+<meta property="og:site_name" content={SITE.nombre} />
+{publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={SITE.twitterHandle} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageURL} />
+
+<!-- Favicon / PWA -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<meta name="theme-color" content="#0B1F3A" />
+
+<!-- Schema.org -->
+<script type="application/ld+json" set:html={JSON.stringify(schema ?? defaultSchema)} />

@@ -1,0 +1,57 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { REDES } from '@/lib/site';
+---
+
+<BaseLayout title="Contacto" description="Ponte en contacto con el equipo de Liderazgo y Fe.">
+  <section class="bg-deep-950 py-20 text-center text-ivory">
+    <div class="container-page">
+      <h1 class="font-display text-4xl md:text-5xl">Contacto</h1>
+      <p class="mx-auto mt-4 max-w-xl text-ivory/70">¿Tienes preguntas, sugerencias o quieres colaborar? Escríbenos.</p>
+    </div>
+  </section>
+
+  <section class="py-20">
+    <div class="container-page grid gap-16 md:grid-cols-2">
+      <div>
+        <h2 class="section-title">Escríbenos</h2>
+        <form
+          name="contacto"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="empresa"
+          action="/gracias"
+          class="mt-8 space-y-5"
+        >
+          <input type="hidden" name="form-name" value="contacto" />
+          <p class="hidden">
+            <label>No llenar: <input name="empresa" /></label>
+          </p>
+
+          <div>
+            <label for="nombre" class="block text-sm font-medium text-deep-700">Nombre</label>
+            <input id="nombre" name="nombre" type="text" required class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400" />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-deep-700">Correo electrónico</label>
+            <input id="email" name="email" type="email" required class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400" />
+          </div>
+          <div>
+            <label for="mensaje" class="block text-sm font-medium text-deep-700">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400"></textarea>
+          </div>
+          <button type="submit" class="btn-primary w-full sm:w-auto">Enviar mensaje</button>
+        </form>
+      </div>
+
+      <div>
+        <h2 class="section-title">Otras formas de contacto</h2>
+        <ul class="mt-8 space-y-4 text-deep-600">
+          <li><strong class="text-deep-900">WhatsApp:</strong> <a href={REDES.whatsapp} target="_blank" rel="noopener noreferrer" class="text-gold-600 hover:underline">Únete a nuestro grupo</a></li>
+          <li><strong class="text-deep-900">Facebook:</strong> <a href={REDES.facebook} target="_blank" rel="noopener noreferrer" class="text-gold-600 hover:underline">/liderazgoyfe</a></li>
+          <li><strong class="text-deep-900">Instagram:</strong> <a href={REDES.instagram} target="_blank" rel="noopener noreferrer" class="text-gold-600 hover:underline">@liderazgoyfe</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

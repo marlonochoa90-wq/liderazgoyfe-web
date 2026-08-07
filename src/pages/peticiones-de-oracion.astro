@@ -1,0 +1,53 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Peticiones de oración"
+  description="Comparte tu petición de oración con nuestra comunidad. Creemos en el poder de la oración en comunidad."
+>
+  <section class="bg-deep-950 py-20 text-center text-ivory">
+    <div class="container-page">
+      <h1 class="font-display text-4xl md:text-5xl">Peticiones de oración</h1>
+      <p class="mx-auto mt-4 max-w-xl text-ivory/70">
+        "Orando en todo tiempo con toda oración y súplica en el Espíritu" — Efesios 6:18. Cuéntanos cómo podemos orar por ti.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-20">
+    <div class="container-page max-w-2xl">
+      <form
+        name="peticion-oracion"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="empresa"
+        action="/gracias"
+        class="space-y-5"
+      >
+        <input type="hidden" name="form-name" value="peticion-oracion" />
+        <p class="hidden">
+          <label>No llenar: <input name="empresa" /></label>
+        </p>
+
+        <div>
+          <label for="nombre" class="block text-sm font-medium text-deep-700">Nombre (opcional)</label>
+          <input id="nombre" name="nombre" type="text" class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400" />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-deep-700">Correo electrónico (opcional)</label>
+          <input id="email" name="email" type="email" class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400" />
+        </div>
+        <div>
+          <label for="peticion" class="block text-sm font-medium text-deep-700">Tu petición de oración</label>
+          <textarea id="peticion" name="peticion" rows="6" required class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400"></textarea>
+        </div>
+        <div class="flex items-center gap-2">
+          <input id="privado" name="privado" type="checkbox" class="h-4 w-4 rounded border-deep-900/20 text-gold-500 focus:ring-gold-400" />
+          <label for="privado" class="text-sm text-deep-600">Mantener esta petición confidencial (solo equipo de oración)</label>
+        </div>
+        <button type="submit" class="btn-gold w-full sm:w-auto">Enviar petición</button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,98 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORIA_COLOR } from '@/lib/site';
+
+const reels = (await getCollection('reels', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+const categorias = ['Todos', ...new Set(reels.map((r) => r.data.categoria))];
+---
+
+<BaseLayout title="Reels" description="Reels cortos de liderazgo, fe y desarrollo personal basados en principios bíblicos.">
+  <section class="bg-deep-950 py-20 text-center text-ivory">
+    <div class="container-page">
+      <h1 class="font-display text-4xl md:text-5xl">Reels</h1>
+      <p class="mx-auto mt-4 max-w-xl text-ivory/70">Contenido corto y directo para inspirarte en minutos.</p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="container-page">
+      <div class="mb-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <input
+          id="buscador-reels"
+          type="search"
+          placeholder="Buscar reels..."
+          class="w-full max-w-sm rounded-full border border-deep-900/10 px-5 py-3 text-sm focus:border-gold-400"
+          aria-label="Buscar reels"
+        />
+        <div id="filtros-categoria" class="flex flex-wrap gap-2">
+          {categorias.map((cat, i) => (
+            <button
+              type="button"
+              data-cat={cat}
+              class:list={[
+                'filtro-btn rounded-full border px-4 py-2 text-xs font-semibold transition-colors',
+                i === 0 ? 'border-gold-500 bg-gold-500 text-deep-950' : 'border-deep-900/10 text-deep-600 hover:border-gold-400',
+              ]}
+            >{cat}</button>
+          ))}
+        </div>
+      </div>
+
+      <div id="grid-reels" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {reels.map((r) => (
+          <div class="reel-item card overflow-hidden" data-title={r.data.title.toLowerCase()} data-cat={r.data.categoria}>
+            <div class="aspect-[9/16] w-full overflow-hidden bg-deep-900">
+              <img src={r.data.miniatura} alt={r.data.title} loading="lazy" class="h-full w-full object-cover" />
+            </div>
+            <div class="p-5">
+              <div class="flex items-center gap-2 text-xs">
+                <span class:list={['badge', CATEGORIA_COLOR[r.data.categoria]]}>{r.data.categoria}</span>
+                {r.data.duracion && <span class="text-deep-400">{r.data.duracion}</span>}
+              </div>
+              <p class="mt-2 font-display text-lg text-deep-900">{r.data.title}</p>
+              <p class="mt-1 text-sm text-deep-500 line-clamp-2">{r.data.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p id="sin-resultados" class="hidden py-10 text-center text-deep-500">No encontramos reels con ese criterio.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const buscador = document.getElementById('buscador-reels') as HTMLInputElement;
+  const botones = document.querySelectorAll<HTMLButtonElement>('.filtro-btn');
+  const items = document.querySelectorAll<HTMLElement>('.reel-item');
+  const sinResultados = document.getElementById('sin-resultados');
+  let categoriaActiva = 'Todos';
+
+  function aplicarFiltros() {
+    const texto = buscador.value.trim().toLowerCase();
+    let visibles = 0;
+    items.forEach((item) => {
+      const coincideTexto = item.dataset.title?.includes(texto);
+      const coincideCat = categoriaActiva === 'Todos' || item.dataset.cat === categoriaActiva;
+      const visible = Boolean(coincideTexto && coincideCat);
+      item.classList.toggle('hidden', !visible);
+      if (visible) visibles++;
+    });
+    sinResultados?.classList.toggle('hidden', visibles !== 0);
+  }
+
+  buscador?.addEventListener('input', aplicarFiltros);
+  botones.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      categoriaActiva = btn.dataset.cat ?? 'Todos';
+      botones.forEach((b) => {
+        b.classList.remove('border-gold-500', 'bg-gold-500', 'text-deep-950');
+        b.classList.add('border-deep-900/10', 'text-deep-600');
+      });
+      btn.classList.add('border-gold-500', 'bg-gold-500', 'text-deep-950');
+      btn.classList.remove('border-deep-900/10', 'text-deep-600');
+      aplicarFiltros();
+    });
+  });
+</script>

@@ -1,0 +1,41 @@
+---
+import { CATEGORIA_COLOR } from '@/lib/site';
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  fecha: Date;
+  categoria: string;
+  imagen?: string;
+  tiempoLectura: number;
+}
+
+const { slug, title, description, fecha, categoria, imagen, tiempoLectura } = Astro.props;
+const fechaFmt = fecha.toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<a href={`/devocionales/${slug}`} class="card group flex flex-col overflow-hidden">
+  <div class="aspect-[16/10] w-full overflow-hidden bg-deep-100">
+    {imagen && (
+      <img
+        src={imagen}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+        class="h-full w-full object-cover transition-transform duration-500 ease-apple group-hover:scale-105"
+      />
+    )}
+  </div>
+  <div class="flex flex-1 flex-col p-6">
+    <div class="flex items-center gap-3 text-xs">
+      <span class:list={['badge', CATEGORIA_COLOR[categoria]]}>{categoria}</span>
+      <span class="text-deep-400">{tiempoLectura} min de lectura</span>
+    </div>
+    <h3 class="mt-3 font-display text-xl leading-snug text-deep-900 group-hover:text-gold-600 transition-colors">
+      {title}
+    </h3>
+    <p class="mt-2 line-clamp-2 text-sm text-deep-600">{description}</p>
+    <p class="mt-4 text-xs uppercase tracking-wider text-deep-400">{fechaFmt}</p>
+  </div>
+</a>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Página no encontrada" description="La página que buscas no existe." noindex={true}>
+  <section class="flex min-h-[70vh] items-center justify-center py-24 text-center">
+    <div class="container-page max-w-xl">
+      <p class="font-display text-7xl text-gold-500">404</p>
+      <h1 class="section-title mt-4">No encontramos esta página</h1>
+      <p class="mt-4 text-deep-600">Puede que el enlace esté roto o la página haya sido movida.</p>
+      <a href="/" class="btn-primary mt-8 inline-flex">Volver al inicio</a>
+    </div>
+  </section>
+</BaseLayout>
