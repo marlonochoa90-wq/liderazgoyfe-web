@@ -3,17 +3,16 @@ export const SITE = {
   lema: 'Liderando con propósito. Viviendo por fe.',
   descripcion:
     'Liderazgo y Fe es la plataforma cristiana en español sobre liderazgo, crecimiento espiritual y desarrollo personal basado en principios bíblicos: devocionales diarios, estudios, reels y recursos descargables.',
-  url: 'https://liderazgoyfe.org',
+  url: 'https://liderazgoyfe.netlify.app',
   idioma: 'es',
   localeOG: 'es_ES',
   twitterHandle: '@liderazgoyfe',
 };
 
 export const REDES = {
-  whatsapp: 'https://chat.whatsapp.com/TU-ENLACE-DE-GRUPO',
-  facebook: 'https://facebook.com/liderazgoyfe',
-  instagram: 'https://instagram.com/liderazgoyfe',
-  youtube: 'https://youtube.com/@liderazgoyfe',
+ whatsapp: 'https://chat.whatsapp.com/DP4XOVCgHnd0GsjxGy66KX',
+  facebook: 'https://www.facebook.com/share/1Bn5LfLKW7/',
+  
 };
 
 export const ANALYTICS = {

@@ -16,23 +16,6 @@ const reels = (await getCollection('reels', ({ data }) => !data.draft))
 
 const categorias = ['Fe', 'Liderazgo', 'Sabiduría', 'Oración', 'Familia', 'Jóvenes', 'Propósito'];
 
-const testimonios = [
-  {
-    nombre: 'Rosa M.',
-    texto: 'Los devocionales de Liderazgo y Fe se han vuelto parte de mi rutina como líder de jóvenes. Son cortos pero profundos.',
-    rol: 'Líder de jóvenes, Tegucigalpa',
-  },
-  {
-    nombre: 'Carlos A.',
-    texto: 'El estudio sobre Nehemías transformó cómo dirijo a mi equipo en el trabajo. Principios bíblicos aplicados de verdad.',
-    rol: 'Gerente y pastor bivocacional',
-  },
-  {
-    nombre: 'Daniela R.',
-    texto: 'Los reels son mi forma favorita de recibir una palabra rápida antes de empezar el día.',
-    rol: 'Emprendedora',
-  },
-];
 ---
 
 <BaseLayout title={`${SITE.nombre} — ${SITE.lema}`} description={SITE.descripcion}>
@@ -40,9 +23,9 @@ const testimonios = [
   <section class="relative flex min-h-[88vh] items-end overflow-hidden bg-deep-950 text-ivory">
     <div class="absolute inset-0">
       <img
-        src="/images/hero-liderazgo-fe.svg"
-        alt=""
-        class="h-full w-full object-cover opacity-60"
+        src="/images/logo-hero-transparente.png"
+        alt="Marlon Ochoa - Liderazgo y Fe"
+        class="h-full w-full object-contain object-center opacity-20"
         fetchpriority="high"
       />
       <div class="absolute inset-0 bg-gradient-to-t from-deep-950 via-deep-950/60 to-deep-950/10"></div>
@@ -161,24 +144,6 @@ const testimonios = [
           >
             {cat}
           </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIOS -->
-  <section class="py-20">
-    <div class="container-page">
-      <h2 class="section-title text-center">Lo que dice nuestra comunidad</h2>
-      <div class="mt-12 grid gap-8 md:grid-cols-3">
-        {testimonios.map((t) => (
-          <blockquote class="card p-8">
-            <p class="font-display text-lg italic leading-relaxed text-deep-800">“{t.texto}”</p>
-            <footer class="mt-6">
-              <p class="text-sm font-semibold text-deep-900">{t.nombre}</p>
-              <p class="text-xs text-deep-500">{t.rol}</p>
-            </footer>
-          </blockquote>
         ))}
       </div>
     </div>
