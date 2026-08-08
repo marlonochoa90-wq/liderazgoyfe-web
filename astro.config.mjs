@@ -1,17 +1,16 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
-
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 
-// Cambia esto por tu dominio real antes de desplegar
 export const SITE_URL = 'https://liderazgoyfe.org';
 
 export default defineConfig({
   site: SITE_URL,
   integrations: [
     tailwind({ applyBaseStyles: false }),
-    
     mdx(),
+    sitemap(),
   ],
   output: 'static',
   build: {
@@ -19,7 +18,6 @@ export default defineConfig({
   },
   compressHTML: true,
   image: {
-    // Usa Sharp para optimización automática de imágenes en build
     service: { entrypoint: 'astro/assets/services/sharp' },
   },
 });
