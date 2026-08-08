@@ -15,7 +15,44 @@ const reels = (await getCollection('reels', ({ data }) => !data.draft))
   .slice(0, 3);
 
 const categorias = ['Fe', 'Liderazgo', 'Sabiduría', 'Oración', 'Familia', 'Jóvenes', 'Propósito'];
+const versiculosDelDia = [
+  {
+    texto: 'Confía en el Señor con todo tu corazón y no te apoyes en tu propia prudencia.',
+    referencia: 'Proverbios 3:5',
+  },
+  {
+    texto: 'Todo lo que hagan, háganlo de corazón, como para el Señor y no para los hombres.',
+    referencia: 'Colosenses 3:23',
+  },
+  {
+    texto: 'Esfuérzate y sé valiente; no temas ni desmayes, porque el Señor tu Dios estará contigo dondequiera que vayas.',
+    referencia: 'Josué 1:9',
+  },
+  {
+    texto: 'Encomienda al Señor tus obras, y tus pensamientos serán afirmados.',
+    referencia: 'Proverbios 16:3',
+  },
+  {
+    texto: 'Pero los que esperan en el Señor tendrán nuevas fuerzas; levantarán alas como las águilas.',
+    referencia: 'Isaías 40:31',
+  },
+  {
+    texto: 'Todo lo puedo en Cristo que me fortalece.',
+    referencia: 'Filipenses 4:13',
+  },
+  {
+    texto: 'Busca primero el reino de Dios y su justicia, y todas estas cosas te serán añadidas.',
+    referencia: 'Mateo 6:33',
+  },
+];
 
+const inicioSemana = new Date('2026-08-03T00:00:00');
+const hoy = new Date();
+const diasDesdeInicio = Math.floor(
+  (hoy.getTime() - inicioSemana.getTime()) / 86400000
+);
+const versiculoDelDia =
+  versiculosDelDia[((diasDesdeInicio % 7) + 7) % 7];
 ---
 
 <BaseLayout title={`${SITE.nombre} — ${SITE.lema}`} description={SITE.descripcion}>
@@ -55,9 +92,9 @@ const categorias = ['Fe', 'Liderazgo', 'Sabiduría', 'Oración', 'Familia', 'Jó
       <div class="container-page text-center">
         <p class="text-xs font-semibold uppercase tracking-[0.3em] text-gold-400">Versículo del día</p>
         <blockquote class="mx-auto mt-5 max-w-2xl font-display text-2xl leading-snug md:text-3xl">
-          “{destacado.data.versiculo}”
+          “{versiculoDelDia.texto}”
         </blockquote>
-        <p class="mt-4 text-sm text-ivory/60">{destacado.data.versiculoRef}</p>
+        <p class="mt-4 text-sm text-ivory/60">{versiculoDelDia.referencia}</p>
       </div>
     </section>
   )}
