@@ -3,7 +3,7 @@ import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
-export const SITE_URL = 'https://liderazgoyfe.org';
+export const SITE_URL = 'https://liderazgoyfe.netlify.app';
 
 export default defineConfig({
   site: SITE_URL,
