@@ -15,8 +15,37 @@ import { REDES } from '@/lib/site';
     <div class="container-page grid gap-16 md:grid-cols-2">
       <div>
         <h2 class="section-title">Escríbenos</h2>
-          <p class="mt-2 text-deep-600">Escríbenos directamente y te responderemos lo antes posible.</p>
-          <a href="mailto:marlonochoa70@gmail.com" class="btn-primary mt-8 inline-flex w-full sm:w-auto">Enviar correo a marlonochoa70@gmail.com</a>
+        <form
+          name="contacto"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="empresa"
+          action="/gracias"
+          class="mt-8 space-y-5"
+        >
+          <input type="hidden" name="form-name" value="contacto" />
+          <p class="hidden">
+            <label>No llenar: <input name="empresa" /></label>
+          </p>
+
+          <div>
+            <label for="nombre" class="block text-sm font-medium text-deep-700">Nombre</label>
+            <input id="nombre" name="nombre" type="text" required class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400" />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-deep-700">Correo electrónico</label>
+            <input id="email" name="email" type="email" required class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400" />
+          </div>
+          <div>
+            <label for="asunto" class="block text-sm font-medium text-deep-700">Asunto</label>
+            <input id="asunto" name="asunto" type="text" required class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400" />
+          </div>
+          <div>
+            <label for="mensaje" class="block text-sm font-medium text-deep-700">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400"></textarea>
+          </div>
+          <button type="submit" class="btn-primary w-full sm:w-auto">Enviar mensaje</button>
+        </form>
       </div>
 
       <div>
@@ -24,7 +53,6 @@ import { REDES } from '@/lib/site';
         <ul class="mt-8 space-y-4 text-deep-600">
           <li><strong class="text-deep-900">WhatsApp:</strong> <a href={REDES.whatsapp} target="_blank" rel="noopener noreferrer" class="text-gold-600 hover:underline">Únete a nuestro grupo</a></li>
           <li><strong class="text-deep-900">Facebook:</strong> <a href={REDES.facebook} target="_blank" rel="noopener noreferrer" class="text-gold-600 hover:underline">/liderazgoyfe</a></li>
-          
         </ul>
       </div>
     </div>

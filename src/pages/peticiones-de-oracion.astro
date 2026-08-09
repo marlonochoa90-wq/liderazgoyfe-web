@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { REDES } from '@/lib/site';
 ---
 
 <BaseLayout
@@ -18,14 +17,37 @@ import { REDES } from '@/lib/site';
 
   <section class="py-20">
     <div class="container-page max-w-2xl">
-        <div class="rounded-2xl border border-deep-900/10 bg-white p-8 text-center shadow-sm sm:p-10">
-          <p class="text-deep-600">
-            Comparte tu petición de oración directamente con nuestra comunidad. Únete al grupo de WhatsApp, cuéntanos cómo podemos orar por ti, y nuestro equipo la recibirá con cariño y confidencialidad.
-          </p>
-          <a href={REDES.whatsapp} target="_blank" rel="noopener noreferrer" class="btn-gold mt-8 inline-flex w-full sm:w-auto">
-            Unirme al grupo y compartir mi petición
-          </a>
+      <form
+        name="peticion-oracion"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="empresa"
+        action="/oracion-recibida"
+        class="space-y-5"
+      >
+        <input type="hidden" name="form-name" value="peticion-oracion" />
+        <p class="hidden">
+          <label>No llenar: <input name="empresa" /></label>
+        </p>
+
+        <div>
+          <label for="nombre" class="block text-sm font-medium text-deep-700">Nombre</label>
+          <input id="nombre" name="nombre" type="text" required class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400" />
         </div>
+        <div>
+          <label for="peticion" class="block text-sm font-medium text-deep-700">Tu petición de oración</label>
+          <textarea id="peticion" name="peticion" rows="6" required class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400"></textarea>
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-deep-700">Correo electrónico (opcional)</label>
+          <input id="email" name="email" type="email" class="mt-2 w-full rounded-xl border border-deep-900/10 px-4 py-3 focus:border-gold-400" />
+        </div>
+        <div class="flex items-center gap-2">
+          <input id="privado" name="privado" type="checkbox" checked class="h-4 w-4 rounded border-deep-900/20 text-gold-500 focus:ring-gold-400" />
+          <label for="privado" class="text-sm text-deep-600">Mantener esta petición confidencial (solo equipo de oración)</label>
+        </div>
+        <button type="submit" class="btn-gold w-full sm:w-auto">Enviar petición</button>
+      </form>
     </div>
   </section>
 </BaseLayout>

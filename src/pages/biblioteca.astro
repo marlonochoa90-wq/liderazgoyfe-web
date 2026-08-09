@@ -2,7 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { CATEGORIAS } from '@/content/config';
-import { CATEGORIA_COLOR } from '@/lib/site';
+import { CATEGORIA_COLOR, CATEGORIA_IMG } from '@/lib/site';
 
 const devocionales = await getCollection('devocionales', ({ data }) => !data.draft);
 const estudios = await getCollection('estudios', ({ data }) => !data.draft);
@@ -13,18 +13,7 @@ function contarPorCategoria(cat: string) {
     estudios.filter((e) => e.data.categoria === cat).length
   );
 }
-
-const CATEGORIA_IMG: Record<string, string> = {
-  Fe: '/images/categorias/fe.jpg',
-  Liderazgo: '/images/categorias/liderazgo.jpg',
-  Sabiduría: '/images/categorias/sabiduria.jpg',
-  Oración: '/images/categorias/oracion.jpg',
-  Familia: '/images/categorias/familia.jpg',
-  Jóvenes: '/images/categorias/jovenes.jpg',
-  Propósito: '/images/categorias/proposito.jpg',
-};
 ---
-
 <BaseLayout
   title="Biblioteca Bíblica"
   description="Explora contenido cristiano organizado por temas: fe, liderazgo, sabiduría, oración, familia, jóvenes y propósito."

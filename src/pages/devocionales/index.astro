@@ -2,18 +2,34 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import DevocionalCard from '@/components/DevocionalCard.astro';
 import { getCollection } from 'astro:content';
+import { CATEGORIA_IMG } from '@/lib/site';
 
-const devocionales = (await getCollection('devocionales', ({ data }) => !data.draft))
+const categoria = Astro.url.searchParams.get('categoria');
+
+const todos = (await getCollection('devocionales', ({ data }) => !data.draft))
   .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+
+const devocionales = categoria
+  ? todos.filter((d) => d.data.categoria === categoria)
+  : todos;
+
+const imagenFondo = categoria ? CATEGORIA_IMG[categoria] : null;
+const titulo = categoria ? categoria : 'Devocionales';
 ---
 
 <BaseLayout
-  title="Devocionales"
+  title={categoria ? `${categoria} — Devocionales` : 'Devocionales'}
   description="Devocionales diarios de 5 minutos con versículo, reflexión, aplicación y oración para tu crecimiento espiritual y liderazgo."
 >
-  <section class="bg-deep-950 py-20 text-center text-ivory">
-    <div class="container-page">
-      <h1 class="font-display text-4xl md:text-5xl">Devocionales</h1>
+  <section class="relative overflow-hidden bg-deep-950 py-20 text-center text-ivory">
+    {imagenFondo && (
+      <>
+        <img src={imagenFondo} alt="" class="absolute inset-0 h-full w-full object-cover opacity-40" />
+        <div class="absolute inset-0 bg-gradient-to-t from-deep-950 via-deep-950/70 to-deep-950/40"></div>
+      </>
+    )}
+    <div class="container-page relative z-10">
+      <h1 class="font-display text-4xl text-ivory md:text-5xl">{titulo}</h1>
       <p class="mx-auto mt-4 max-w-xl text-ivory/70">
         Cinco minutos al día para alinear tu corazón, tu liderazgo y tu propósito con la Palabra de Dios.
       </p>
@@ -36,7 +52,7 @@ const devocionales = (await getCollection('devocionales', ({ data }) => !data.dr
         ))}
       </div>
       {devocionales.length === 0 && (
-        <p class="text-center text-deep-500">Pronto publicaremos nuevos devocionales. Vuelve pronto.</p>
+        <p class="text-center text-deep-500">Pronto publicaremos nuevos devocionales de esta categoría. Vuelve pronto.</p>
       )}
     </div>
   </section>

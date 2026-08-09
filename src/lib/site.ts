@@ -41,3 +41,13 @@ export const CATEGORIA_COLOR: Record<string, string> = {
   Jóvenes: 'bg-gold-100 text-gold-800',
   Propósito: 'bg-deep-100 text-deep-800',
 };
+
+export const CATEGORIA_IMG: Record<string, string> = {
+  Fe: '/images/categorias/fe.jpg',
+  Liderazgo: '/images/categorias/liderazgo.jpg',
+  Sabiduría: '/images/categorias/sabiduria.jpg',
+  Oración: '/images/categorias/oracion.jpg',
+  Familia: '/images/categorias/familia.jpg',
+  Jóvenes: '/images/categorias/jovenes.jpg',
+  Propósito: '/images/categorias/proposito.jpg',
+};
