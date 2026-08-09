@@ -25,7 +25,7 @@ export const NAV = [
   { href: '/', label: 'Inicio' },
   { href: '/devocionales', label: 'Devocionales' },
   { href: '/biblioteca', label: 'Biblioteca' },
-  { href: '/reels', label: 'Reels' },
+  { href: REDES.facebook, label: 'Reels', external: true },
   { href: '/estudios', label: 'Estudios' },
   { href: '/recursos', label: 'Recursos' },
   { href: '/acerca', label: 'Acerca' },

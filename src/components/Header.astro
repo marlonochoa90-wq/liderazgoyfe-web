@@ -19,6 +19,8 @@ const currentPath = Astro.url.pathname;
             'text-sm font-medium tracking-wide transition-colors duration-300 ease-apple hover:text-gold-600',
             currentPath === item.href ? 'text-gold-600' : 'text-deep-700',
           ]}
+target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener noreferrer' : undefined}
           aria-current={currentPath === item.href ? 'page' : undefined}
         >
           {item.label}
@@ -58,6 +60,8 @@ const currentPath = Astro.url.pathname;
           'rounded-lg px-3 py-3 text-base font-medium transition-colors',
           currentPath === item.href ? 'bg-gold-50 text-gold-700' : 'text-deep-800 hover:bg-deep-50',
         ]}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener noreferrer' : undefined}
       >
         {item.label}
       </a>
