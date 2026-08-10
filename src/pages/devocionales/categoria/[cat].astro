@@ -1,0 +1,64 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import DevocionalCard from '@/components/DevocionalCard.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORIAS } from '@/content/config';
+import { CATEGORIA_IMG } from '@/lib/site';
+
+
+export async function getStaticPaths() {
+  const devocionales = await getCollection('devocionales', ({ data }) => !data.draft);
+  return CATEGORIAS.map((cat) => ({
+    params: { cat: cat.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') },
+    props: {
+      categoria: cat,
+      devocionales: devocionales
+        .filter((d) => d.data.categoria === cat)
+        .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf()),
+    },
+  }));
+}
+
+const { categoria, devocionales } = Astro.props;
+const imagenFondo = CATEGORIA_IMG[categoria];
+---
+
+<BaseLayout
+  title={`${categoria} — Devocionales`}
+  description={`Devocionales de la categoría ${categoria}: versículo, reflexión, aplicación y oración.`}
+>
+  <section class="relative overflow-hidden bg-deep-950 py-20 text-center text-ivory">
+    <img src={imagenFondo} alt="" class="absolute inset-0 h-full w-full object-cover opacity-40" />
+    <div class="absolute inset-0 bg-gradient-to-t from-deep-950 via-deep-950/70 to-deep-950/40"></div>
+    <div class="container-page relative z-10">
+      <h1 class="font-display text-4xl text-ivory md:text-5xl">{categoria}</h1>
+      <p class="mx-auto mt-4 max-w-xl text-ivory/70">
+        Devocionales de la categoría {categoria} para tu crecimiento espiritual y liderazgo.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="container-page">
+      <div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
+        {devocionales.map((d) => (
+          <DevocionalCard
+            slug={d.slug}
+            title={d.data.title}
+            description={d.data.description}
+            fecha={d.data.fecha}
+            categoria={d.data.categoria}
+            imagen={d.data.imagen}
+            tiempoLectura={d.data.tiempoLectura}
+          />
+        ))}
+      </div>
+      {devocionales.length === 0 && (
+        <p class="text-center text-deep-500">Pronto publicaremos nuevos devocionales de esta categoría. Vuelve pronto.</p>
+      )}
+      <div class="mt-10 text-center">
+        <a href="/devocionales" class="text-sm font-semibold text-gold-600 hover:underline">← Ver todos los devocionales</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORIA_COLOR, SITE } from '@/lib/site';
+
+export async function getStaticPaths() {
+  const estudios = await getCollection('estudios', ({ data }) => !data.draft);
+  return estudios.map((e) => ({ params: { slug: e.slug }, props: { entry: e } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { title, description, fecha, categoria, numeroLecciones, nivel, imagen } = entry.data;
+const fechaFmt = fecha.toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' });
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: fecha.toISOString(),
+  publisher: { '@type': 'Organization', name: SITE.nombre },
+  image: imagen ? new URL(imagen, SITE.url).toString() : undefined,
+};
+---
+
+<BaseLayout title={title} description={description} image={imagen} type="article" publishedTime={fecha} schema={schema}>
+  <article class="py-16">
+    <div class="container-page max-w-3xl">
+      <div class="flex items-center gap-3 text-xs">
+        <span class:list={['badge', CATEGORIA_COLOR[categoria]]}>{categoria}</span>
+        <span class="text-deep-400">{numeroLecciones} lecciones · Nivel {nivel} · {fechaFmt}</span>
+      </div>
+      <h1 class="mt-4 font-display text-3xl md:text-5xl text-deep-900">{title}</h1>
+      <p class="mt-2 text-sm text-deep-500">{description}</p>
+      {imagen && (
+        <div class="mt-8 overflow-hidden rounded-3xl shadow-premium">
+          <img src={imagen} alt={title} class="w-full object-cover" />
+        </div>
+      )}
+      <div class="prose prose-lg mt-10 max-w-none prose-headings:font-display prose-headings:text-deep-900 prose-a:text-gold-600">
+        <Content />
+      </div>
+      <div class="mt-10">
+        <a href="/estudios" class="text-sm font-semibold text-gold-600 hover:underline">← Volver a estudios</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
