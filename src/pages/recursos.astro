@@ -28,7 +28,11 @@ const recursos = (await getCollection('recursos', ({ data }) => !data.draft))
             <h2 class="mt-3 font-display text-xl text-deep-900">{r.data.title}</h2>
             <p class="mt-2 flex-1 text-sm text-deep-600">{r.data.description}</p>
             {r.data.paginas && <p class="mt-3 text-xs text-deep-400">{r.data.paginas} páginas</p>}
-            <a href={r.data.archivoUrl} download class="btn-primary mt-5">Descargar</a>
+            {r.data.archivoUrl.includes("guia-devocional-30-dias") ? (
+                <span class="badge bg-deep-100 text-deep-500 mt-5 w-fit">Próximamente disponible</span>
+              ) : (
+                <a href={r.data.archivoUrl} download class="btn-primary mt-5">Descargar</a>
+              )}
           </div>
         </div>
       ))}

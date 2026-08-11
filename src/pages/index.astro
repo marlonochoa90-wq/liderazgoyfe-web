@@ -176,7 +176,7 @@ const versiculoDelDia =
       <div class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
         {categorias.map((cat) => (
           <a
-            href={`/biblioteca#${cat.toLowerCase()}`}
+            href={`/devocionales/categoria/${cat.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`}
             class="rounded-2xl border border-ivory/10 bg-ivory/5 p-6 text-center font-display text-lg transition-all duration-300 ease-apple hover:border-gold-400/50 hover:bg-ivory/10"
           >
             {cat}

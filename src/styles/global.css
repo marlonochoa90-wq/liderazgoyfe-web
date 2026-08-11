@@ -20,6 +20,9 @@
   h1, h2, h3, h4 {
     @apply font-display text-deep-900;
   }
+  .bg-deep-950 h1 {
+    @apply text-ivory;
+  }
   ::selection {
     @apply bg-gold-200 text-deep-900;
   }

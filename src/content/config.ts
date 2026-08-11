@@ -52,6 +52,7 @@ const estudios = defineCollection({
     numeroLecciones: z.number().default(1),
     nivel: z.enum(['Introductorio', 'Intermedio', 'Avanzado']).default('Introductorio'),
     imagen: z.string().optional(),
+    lecciones: z.array(z.string()).optional(),
     draft: z.boolean().default(false),
   }),
 });

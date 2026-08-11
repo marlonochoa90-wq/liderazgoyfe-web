@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { CATEGORIA_COLOR } from '@/lib/site';
+import { CATEGORIA_COLOR, REDES } from '@/lib/site';
 
 const reels = (await getCollection('reels', ({ data }) => !data.draft))
   .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
@@ -42,7 +42,7 @@ const categorias = ['Todos', ...new Set(reels.map((r) => r.data.categoria))];
 
       <div id="grid-reels" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {reels.map((r) => (
-          <div class="reel-item card overflow-hidden" data-title={r.data.title.toLowerCase()} data-cat={r.data.categoria}>
+          <a href={REDES.facebook} target="_blank" rel="noopener noreferrer" class="reel-item card overflow-hidden" data-title={r.data.title.toLowerCase()} data-cat={r.data.categoria}>
             <div class="aspect-[9/16] w-full overflow-hidden bg-deep-900">
               <img src={r.data.miniatura} alt={r.data.title} loading="lazy" class="h-full w-full object-cover" />
             </div>
@@ -54,7 +54,7 @@ const categorias = ['Todos', ...new Set(reels.map((r) => r.data.categoria))];
               <p class="mt-2 font-display text-lg text-deep-900">{r.data.title}</p>
               <p class="mt-1 text-sm text-deep-500 line-clamp-2">{r.data.description}</p>
             </div>
-          </div>
+          </a>
         ))}
       </div>
       <p id="sin-resultados" class="hidden py-10 text-center text-deep-500">No encontramos reels con ese criterio.</p>
